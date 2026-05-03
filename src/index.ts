@@ -1,7 +1,6 @@
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
-import { zodToJsonSchema } from "zod-to-json-schema";
 import { GetSystemInfoSchema, handleSystemInfo } from "./tools/systemTools.js";
 import { AddNoteSchema, ListNotesSchema, addNote, listNotes } from "./tools/noteTools.js";
 
@@ -15,17 +14,17 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     {
       name: "get_system_info",
       description: "Sistem kaynakları hakkında bilgi verir",
-      inputSchema: zodToJsonSchema(GetSystemInfoSchema)
+      inputSchema: GetSystemInfoSchema
     },
     {
       name: "add_note",
       description: "Yerel veritabanına yeni bir not kaydeder",
-      inputSchema: zodToJsonSchema(AddNoteSchema)
+      inputSchema: AddNoteSchema
     },
     {
       name: "list_notes",
       description: "Kaydedilmiş notları listeler veya arama yapar",
-      inputSchema: zodToJsonSchema(ListNotesSchema)
+      inputSchema: ListNotesSchema
     }
   ]
 }));
