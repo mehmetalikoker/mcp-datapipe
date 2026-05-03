@@ -1,17 +1,17 @@
 import Database from "better-sqlite3";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 
-// Veritabanı dosyasını proje kökünde oluşturur
-const db = new Database(join(process.cwd(), "mcp_data.db"));
+// Mevcut dosyanın klasör yolunu bul (ESM için)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-// Başlangıçta tabloyu oluşturalım
-db.exec(`
-  CREATE TABLE IF NOT EXISTS notes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    content TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )
-`);
+// Veritabanını build klasörü yerine proje kökünde tutmak için bir üst klasöre çıkalım
+const dbPath = join(__dirname, "..", "mcp_data.db");
+
+const db = new Database(dbPath, { 
+    verbose: console.error // Hataları Claude loglarında görmek için
+});
 
 export default db;
+
