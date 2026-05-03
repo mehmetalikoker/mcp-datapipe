@@ -3,50 +3,20 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { CallToolRequestSchema, ListToolsRequestSchema } from "@modelcontextprotocol/sdk/types.js";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { GetSystemInfoSchema, handleSystemInfo } from "./tools/systemTools.js";
+import { AddNoteSchema, ListNotesSchema, addNote, listNotes } from "./tools/noteTools.js";
 
 const server = new Server(
   { name: "my-modular-server", version: "1.0.0" },
   { capabilities: { tools: {} } }
 );
 
-// Araçları Listeleme
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: [
     {
       name: "get_system_info",
       description: "Sistem kaynakları hakkında bilgi verir",
       inputSchema: zodToJsonSchema(GetSystemInfoSchema)
-    }
-  ]
-}));
-
-// Araç Çağrılarını Dağıtma (Routing)
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  switch (request.params.name) {
-    case "get_system_info": {
-      const args = GetSystemInfoSchema.parse(request.params.arguments);
-      const result = await handleSystemInfo(args);
-      return {
-        content: [{ type: "text", text: result }]
-      };
-    }
-    default:
-      throw new Error("Araç bulunamadı");
-  }
-});
-
-const transport = new StdioServerTransport();
-await server.connect(transport);
-
-
-
-import { zodToJsonSchema } from "zod-to-json-schema";
-import { AddNoteSchema, ListNotesSchema, addNote, listNotes } from "./tools/noteTools.js";
-
-// ... (Server tanımlama kısımları)
-
-server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: [
+    },
     {
       name: "add_note",
       description: "Yerel veritabanına yeni bir not kaydeder",
@@ -65,19 +35,34 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   try {
     switch (name) {
-      case "add_note":
-        return { content: [{ type: "text", text: await addNote(AddNoteSchema.parse(args)) }] };
-      
-      case "list_notes":
-        return { content: [{ type: "text", text: await listNotes(ListNotesSchema.parse(args)) }] };
+      case "get_system_info": {
+        const parsed = GetSystemInfoSchema.parse(args);
+        const result = await handleSystemInfo(parsed);
+        return { content: [{ type: "text", text: result }] };
+      }
+
+      case "add_note": {
+        const parsed = AddNoteSchema.parse(args);
+        const result = await addNote(parsed);
+        return { content: [{ type: "text", text: result }] };
+      }
+
+      case "list_notes": {
+        const parsed = ListNotesSchema.parse(args);
+        const result = await listNotes(parsed);
+        return { content: [{ type: "text", text: result }] };
+      }
 
       default:
         throw new Error("Araç bulunamadı");
     }
   } catch (error: any) {
     return {
-      content: [{ type: "text", text: `Hata: ${error.message}` }],
+      content: [{ type: "text", text: `Hata: ${error?.message ?? "Bilinmeyen hata"}` }],
       isError: true
     };
   }
 });
+
+const transport = new StdioServerTransport();
+await server.connect(transport);
