@@ -9,7 +9,7 @@
     "watch": "tsc -w",
     "start": "node build/index.js",
     "inspector": "npx @modelcontextprotocol/inspector node build/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +20,11 @@
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
+    "@types/jest": "^30.0.0",
     "@types/node": "^25.6.0",
+    "cross-env": "^10.1.0",
+    "jest": "^30.3.0",
+    "ts-jest": "^29.4.9",
     "typescript": "^6.0.3",
     "zod": "^4.4.2"
   }
