@@ -2,7 +2,7 @@ import Database from "better-sqlite3";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
-// Mevcut dosyanın klasör yolunu bul (ESM için)
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 const dbPath = join(__dirname, "..", "mcp_data.db");
 
 const db = new Database(dbPath, { 
-    verbose: console.error // Hataları Claude loglarında görmek için
+    verbose: console.error 
 });
 
 export default db;
