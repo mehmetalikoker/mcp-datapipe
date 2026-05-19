@@ -211,3 +211,9 @@ Ayar dosyasının konumu:
 | `zod` | Çalışma zamanı şema doğrulaması |
 | TypeScript | Tip güvenliği |
 | Jest | Birim testleri |
+
+---
+
+## Ekran Görüntüsü
+<img width="1911" height="929" alt="333" src="https://github.com/user-attachments/assets/200f98f1-0b4c-428c-9610-c41dbbfaf232" />
+
