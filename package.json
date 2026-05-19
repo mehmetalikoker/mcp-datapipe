@@ -2,8 +2,7 @@
   "name": "my-mcp-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
+"type": "module",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",

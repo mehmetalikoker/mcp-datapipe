@@ -11,9 +11,7 @@ export class DatabaseConfig {
   static getInstance(): Database.Database {
     if (!DatabaseConfig.instance) {
       const dbPath = join(__dirname, '..', '..', 'mcp_data.db');
-      DatabaseConfig.instance = new Database(dbPath, {
-        verbose: console.error
-      });
+      DatabaseConfig.instance = new Database(dbPath);
     }
     return DatabaseConfig.instance;
   }
