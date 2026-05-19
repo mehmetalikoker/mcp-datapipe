@@ -13,8 +13,10 @@ export class SystemService implements ISystemService {
         return this.getMemoryInfo();
       case 'platform':
         return this.getPlatformInfo();
-      default:
-        throw new Error(`Geçersiz topic: ${topic}`);
+      default: {
+        const _exhaustive: never = topic;
+        throw new Error(`Geçersiz topic: ${_exhaustive}`);
+      }
     }
   }
 
